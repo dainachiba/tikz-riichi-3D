@@ -1,0 +1,146 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{mahjong-hand-3D}
+
+%\usepackage[margin=1in]{geometry}
+\usepackage{adjustbox}
+\usepackage{setspace}
+\setlength{\parindent}{0pt}
+
+% Space, Header, section structure
+\setcounter{tocdepth}{1} %\setcounter{secnumdepth}{1}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{placeins}
+\usepackage{sectsty}
+\usepackage{appendix}
+\usepackage{makeidx}
+\usepackage{lscape}
+\usepackage{multicol}
+
+%Paper size: A5
+\usepackage[11pt]{extsizes}
+\usepackage[paperwidth=110mm, paperheight=109mm, top=2mm, bottom = 1mm, inner=2mm, outer = 2mm]{geometry}
+%\special{papersize=110mm,109mm}
+
+
+\begin{document}
+
+\begin{center}
+\begin{picture}(300,300)
+\linethickness{.2mm}
+
+% Draw a box frame --------------
+\put(0,300){\line(1,0){300}}\put(0,0){\line(1,0){300}}  % horizontal
+\put(300,0){\line(0,1){300}}\put(0,0){\line(0,1){300}}  % vertical
+
+
+% Define hands -------------
+
+% Mine
+\put(30,20){\rotatebox{0}{
+	\DrawHand{z1234567m19p19s19~z1}{2em}
+}}
+
+% kamicha (left player)
+\put(15,234){\rotatebox{270}{
+	\DrawHand{??????????????}{1.5em}
+}}
+
+% shimocha (right player)
+\put(268,66){\rotatebox{90}{
+	\DrawHand{??????????????}{1.5em}
+}}
+
+% toimen (facing player)
+\put(66,285){\rotatebox{180}{
+	\DrawHand{??????????????}{1.5em}
+}}
+
+% Draw the middle board--------------
+\linethickness{.5mm}
+\put(110.3,111){\line(1,0){79.4}}
+\put(111,188.7){\line(1,0){78.5}}
+\put(111,111){\line(0,1){78.4}}
+\put(189,111){\line(0,1){78.4}}
+\linethickness{.2mm}
+\put(130, 170){South-4}
+\put(125, 153){\includegraphics[width=.015\textwidth, angle=90]{sticks/1000thick.png} \footnotesize $\times$ 0}
+\put(125, 143){\includegraphics[width=.015\textwidth, angle=90]{sticks/100thick.png} \footnotesize $\times$ 0}
+\put(118, 120){\rotatebox{0}{
+	\DrawHand{???}{1em}\DrawHand{z6}{1em}\hspace{-0.4pt}\DrawHand{?????}{1em}
+}}
+
+% Player scores--------------
+\put(127, 2){East: 35700}
+\put(290, 120){\rotatebox{90}{South: 24000}}
+\put(116, 298){\rotatebox{180}{West: 16400}}
+\put(2, 179){\rotatebox{270}{North: 23900}}
+
+
+% Discard ponds--------------
+% mine
+\put(109,94){\rotatebox{0}{
+	\DrawDiscard{m123406}{1.3em}
+}}
+\put(109,78){\rotatebox{0}{
+	\DrawDiscard{p123456}{1.3em}
+}}
+\put(109,62){\rotatebox{0}{
+	\DrawDiscard{s123456}{1.3em}
+}}
+
+% kamicha (left player)
+\put(93,190){\rotatebox{270}{
+	\DrawDiscard{m123456}{1.3em}
+}}
+\put(77,190){\rotatebox{270}{
+	\DrawDiscard{p123406}{1.3em}
+}}
+\put(61,190){\rotatebox{270}{
+	\DrawDiscard{s123456}{1.3em}
+}}
+
+% shimocha (right player)
+\put(192,110){\rotatebox{90}{
+	\DrawDiscard{m123456}{1.3em}
+}}
+\put(208,110){\rotatebox{90}{
+	\DrawDiscard{p123456}{1.3em}
+}}
+\put(224,110){\rotatebox{90}{
+	\DrawDiscard{s123406}{1.3em}
+}}
+
+% toimen (facing player)
+\put(109,206){\rotatebox{180}{
+	\DrawDiscard{m123456}{1.3em}
+}}
+\put(109,222){\rotatebox{180}{
+	\DrawDiscard{p123456}{1.3em}
+}}
+\put(109,238){\rotatebox{180}{
+	\DrawDiscard{s123456}{1.3em}
+}}
+
+
+% Grid: this maybe helpful when adjusting the locations of images
+
+%\linethickness{.1mm}
+%\put(0,111){\line(1,0){300}} % horizontal
+%\put(0,189){\line(1,0){300}} % horizontal
+%\put(111,0){\line(0,1){300}} % vertical
+%\put(189,0){\line(0,1){300}} % vertical
+%\linethickness{.1mm}
+%\put(0,225){\line(1,0){300}} % horizontal
+%\put(0,150){\line(1,0){300}} % horizontal
+%\put(0,75){\line(1,0){300}} % horizontal
+%\put(75,0){\line(0,1){300}} % vertical
+%\put(150,0){\line(0,1){300}} % vertical
+%\put(225,0){\line(0,1){300}} % vertical
+
+\end{picture}
+\end{center}
+
+
+\end{document}
