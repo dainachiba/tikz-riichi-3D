@@ -31,6 +31,8 @@
 \newlength{\@mahjongtilesymbolheight}
 %\definecolor{tilebackcolor}{RGB}{255, 89, 89}
 \definecolor{tilebackcolor}{RGB}{207, 142, 37}
+\definecolor{tilegray}{RGB}{211, 211, 211}
+\definecolor{tileshadingcolor}{RGB}{255, 255, 180}
 
 % Series of \expandafter's useful for quitting nested conditionals.
 \def\@eaA{\expandafter}
@@ -63,6 +65,17 @@
     ] (rect) {};
     \setlength{\@mahjongtilexoffset}{\@mahjongtilerightedge}
     \global\@mahjongtilexoffset=\@mahjongtilexoffset}
+\def\@DrawNormalGray #1{
+    \addtolength{\@mahjongtilerightedge}{\@mahjongtilewidth}
+    \node [
+        fit={(\@mahjongtilexoffset,0pt)(\@mahjongtilerightedge,\@mahjongtileheight)},
+        draw=black,
+        inner sep=0pt,
+        rounded corners=\@mahjongtilecornerradius,
+        fill=tilegray
+    ] (rect) {};
+    \setlength{\@mahjongtilexoffset}{\@mahjongtilerightedge}
+    \global\@mahjongtilexoffset=\@mahjongtilexoffset}
 \def\@DrawRotatedTile #1{
     \addtolength{\@mahjongtilerightedge}{\@mahjongtileheight}
     \node [
@@ -87,6 +100,17 @@
     ] (rect) {};
     \setlength{\@mahjongtilexoffset}{\@mahjongtilerightedge}
     \global\@mahjongtilexoffset=\@mahjongtilexoffset}
+\def\@DrawRotatedGray{
+    \addtolength{\@mahjongtilerightedge}{\@mahjongtileheight}
+    \node [
+        fit={(\@mahjongtilexoffset,0pt)(\@mahjongtilerightedge,\@mahjongtilewidth)},
+        draw=black,
+        inner sep=0pt,
+        rounded corners=\@mahjongtilecornerradius,
+        fill=tilegray
+    ] (rect) {};
+    \setlength{\@mahjongtilexoffset}{\@mahjongtilerightedge}
+    \global\@mahjongtilexoffset=\@mahjongtilexoffset}
 \def\@DrawTile #1#2{
     \setlength{\@mahjongtilerightedge}{\@mahjongtilexoffset}
     \ifx#2*
@@ -101,6 +125,18 @@
     \else
         \expandafter\@DrawNormalBack
     \fi}
+\def\@DrawTileGray #1{
+    \setlength{\@mahjongtilerightedge}{\@mahjongtilexoffset}
+    \ifx#1*
+        \expandafter\@DrawRotatedGray
+    \else
+        \expandafter\@DrawNormalGray
+    \fi}
+
+\def\@ApplyShadingOverlay{%
+    \fill [tileshadingcolor, fill opacity=0.4, rounded corners=\@mahjongtilecornerradius]
+        (rect.south west) rectangle (rect.north east);%
+}
 
 \def\DrawHand #1#2{%
     \setlength{\@mahjongtileheight}{#2}%
@@ -119,15 +155,22 @@
     \else\@eaD\@HeadStep\fi\fi\fi\fi#1#2#3}
 \def\@EatTwo #1#2{}
 \def\@ParserHead #1#2{\ifx#2\relax\expandafter\@EatTwo\else\expandafter\@MoveHead\fi#1#2}
-\def\@ProcessCharsX #1#2#3{\ifx#2*\expandafter\relax\else\@ProcessCharsY#1#2#3\fi}
+\def\@ProcessCharsX #1#2#3{%
+    \ifx#2*%
+    \else\ifx#2^%
+        \@ApplyShadingOverlay%
+    \else
+        \@ProcessCharsY#1#2#3%
+    \fi\fi}
 \def\@ProcessCharsY #1#2#3{%
     \ifx#2~\@TilePause%
     \else\ifx#2?\@DrawTileBack#3%
+    \else\ifx#2!\@DrawTileGray#3%
     \else
         \ifx#1m\@ProcessCharsZ{Man}#2#3\fi%
         \ifx#1p\@ProcessCharsZ{Pin}#2#3\fi%
         \ifx#1s\@ProcessCharsZ{Sou}#2#3\fi%
-        \ifx#1z\@ProcessHonor#2#3\fi\fi\fi}
+        \ifx#1z\@ProcessHonor#2#3\fi\fi\fi\fi}
 \def\@ProcessCharsZ #1#2#3{\ifx#20\@DrawTile{#15-Dora}#3\else\@DrawTile{#1#2}#3\fi}
 \def\@ProcessHonor #1#2{
     \ifx#11\@DrawTile{Ton}#2\fi%
@@ -145,7 +188,7 @@
 \newif\if@mahjongdiscardmode
 \@mahjongdiscardmodefalse
 
-% Redefine the four drawing primitives to conditionally insert 0.5pt gaps
+% Redefine the four drawing primitives to conditionally insert gaps
 
 \def\@DrawNormalTile #1{%
     \addtolength{\@mahjongtilerightedge}{\@mahjongtilewidth}%
@@ -175,6 +218,19 @@
     \if@mahjongdiscardmode\addtolength{\@mahjongtilexoffset}{1pt}\fi%
     \global\@mahjongtilexoffset=\@mahjongtilexoffset}
 
+\def\@DrawNormalGray #1{%
+    \addtolength{\@mahjongtilerightedge}{\@mahjongtilewidth}%
+    \node [
+        fit={(\@mahjongtilexoffset,0pt)(\@mahjongtilerightedge,\@mahjongtileheight)},
+        draw=black,
+        inner sep=0pt,
+        rounded corners=\@mahjongtilecornerradius,
+        fill=tilegray
+    ] (rect) {};
+    \setlength{\@mahjongtilexoffset}{\@mahjongtilerightedge}%
+    \if@mahjongdiscardmode\addtolength{\@mahjongtilexoffset}{1pt}\fi%
+    \global\@mahjongtilexoffset=\@mahjongtilexoffset}
+
 \def\@DrawRotatedTile #1{%
     \addtolength{\@mahjongtilerightedge}{\@mahjongtileheight}%
     \node [
@@ -198,6 +254,19 @@
         inner sep=0pt,
         rounded corners=\@mahjongtilecornerradius,
         fill=tilebackcolor
+    ] (rect) {};
+    \setlength{\@mahjongtilexoffset}{\@mahjongtilerightedge}%
+    \if@mahjongdiscardmode\addtolength{\@mahjongtilexoffset}{1pt}\fi%
+    \global\@mahjongtilexoffset=\@mahjongtilexoffset}
+
+\def\@DrawRotatedGray{%
+    \addtolength{\@mahjongtilerightedge}{\@mahjongtileheight}%
+    \node [
+        fit={(\@mahjongtilexoffset,0pt)(\@mahjongtilerightedge,\@mahjongtilewidth)},
+        draw=black,
+        inner sep=0pt,
+        rounded corners=\@mahjongtilecornerradius,
+        fill=tilegray
     ] (rect) {};
     \setlength{\@mahjongtilexoffset}{\@mahjongtilerightedge}%
     \if@mahjongdiscardmode\addtolength{\@mahjongtilexoffset}{1pt}\fi%
